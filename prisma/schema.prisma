@@ -1,0 +1,71 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./manga.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String            @id @default(cuid())
+  username      String            @unique
+  email         String            @unique
+  passwordHash  String
+  avatarUrl     String?
+  createdAt     DateTime          @default(now())
+  bookmarks     Bookmark[]
+  progress      ReadingProgress[]
+  searchHistory SearchHistory[]
+}
+
+model MangaCache {
+  slug          String   @id
+  title         String
+  altTitle      String?
+  genres        String
+  type          String?
+  rating        Float?
+  authors       String?
+  publishedDate String?
+  coverUrl      String?
+  synopsis      String?
+  cachedAt      DateTime @default(now())
+  expiresAt     DateTime
+}
+
+model Bookmark {
+  id         String   @id @default(cuid())
+  userId     String
+  mangaSlug  String
+  mangaTitle String   @default("")
+  mangaCover String   @default("")
+  status     String   @default("plan_to_read")
+  score      Int?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mangaSlug])
+}
+
+model ReadingProgress {
+  id            String   @id @default(cuid())
+  userId        String
+  mangaSlug     String
+  chapterNumber Float
+  pageNumber    Int      @default(1)
+  totalPages    Int      @default(0)
+  readAt        DateTime @default(now())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, mangaSlug, chapterNumber])
+}
+
+model SearchHistory {
+  id         String   @id @default(cuid())
+  userId     String
+  query      String
+  searchedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
