@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, Crown, Flame } from "lucide-react";
+import { Star, Crown } from "lucide-react";
 import { LazyImage } from "@/components/shared/LazyImage";
 import { proxyUrl } from "@/lib/utils";
 
