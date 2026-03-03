@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LazyImage } from "@/components/shared/LazyImage";
-import { Skeleton } from "@/components/ui/skeleton";
+
 import { useReaderStore } from "@/lib/store";
 import { cn, proxyUrl } from "@/lib/utils";
 import type { ChapterPagesResponse, ChapterListResponse } from "@/lib/types";
